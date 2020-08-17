@@ -30,9 +30,9 @@ io.on('connection', (socket) => {
       io.to(roomId).emit('createMessage', message);
     });
     socket.on('disconnect', () => {
-      socket.to(roomId).broadcast.emit('user-disconnected', userId)
-    })
+      socket.to(roomId).broadcast.emit('user-disconnected', userId);
+    });
   });
 });
 
-server.listen(3030);
+server.listen(process.env.PORT || 3030);
