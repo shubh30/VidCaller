@@ -5,7 +5,7 @@ const io = require('socket.io')(server);
 const { v4: uuidv4 } = require('uuid');
 // const { ExpressPeerServer } = require('peer');
 // const peerServer = ExpressPeerServer(server, {
-//   debug: true 
+//   debug: true
 // });
 
 app.set('view engine', 'ejs');
@@ -26,6 +26,9 @@ io.on('connection', (socket) => {
   socket.on('join-room', (roomId, userId) => {
     socket.join(roomId);
     socket.to(roomId).broadcast.emit('user-connected', userId);
+    socket.on('message', (message) => {
+      io.to(roomId).emit('createMessage', message);
+    });
   });
 });
 

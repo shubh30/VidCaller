@@ -38,7 +38,7 @@ peer.on('open', (id) => {
 });
 
 const connectToNewUser = (userId, stream) => {
-  console.log('New User ' + userId); 
+  console.log('New User ' + userId);
   const call = peer.call(userId, stream);
   const video = document.createElement('video');
   call.on('stream', (userVideoStream) => {
@@ -55,3 +55,18 @@ const addVideoStream = (video, stream) => {
   });
   videoGrid.append(video);
 };
+
+let text = $('input');
+
+$('html').keydown(function (e) {
+  if (e.which == 13 && text.val().length !== 0) {
+    console.log(text.val());
+    socket.emit('message', text.val());
+    text.val('');
+  }
+});
+
+socket.on('createMessage', (message) => {
+  console.log('this is comming from server', message);
+  $('ul').append(`<li class="message"><b>user</b><br/>${message}</li>`);
+});
